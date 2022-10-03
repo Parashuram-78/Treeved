@@ -1,0 +1,29 @@
+.App {
+    text-align: center;
+  }
+  
+  .form-group {
+    margin: 34px;
+  }
+  .logo{
+
+  }
+  .form-group  {
+    position: relative;
+    /* left: -75px; */
+    color: dodgerblue;
+    margin-top: -25px;
+  }
+  
+  .form-group #email {
+    position: relative;
+    /* left: -76px; */
+    color: dodgerblue;
+  }
+  
+  .form-group #password {
+    position: relative;
+    /* left: -61px; */
+    color: dodgerblue;
+  }
+  

@@ -1,12 +1,20 @@
-import './App.css';
-import Home from './Components/Home_Page/Home';
-import ListPage from './Components/List_Page/ListPage';
-import Dairy_Success from './Components/Success_Page/Dairy_Success';
-import List_Success from './Components/Success_Page/List_Success';
-
+import "./App.css";
+import ListPage from "./Components/List_Page/ListPage";
+import Login from "./Components/HomePage/LoginPage";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import SignUp from "./Components/HomePage/SignUp";
 function App() {
   return (
-    <><Home/></>
+    <>
+      {/* <ListPage />
+      <Login /> */}
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<SignUp />} />
+          <Route exact path="/List" element={<ListPage />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
