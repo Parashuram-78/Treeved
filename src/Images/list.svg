@@ -1,0 +1,17 @@
+<svg width="133" height="121" viewBox="0 0 133 121" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="22" y="9" width="80" height="100" rx="4" fill="white"/>
+<rect x="29" y="20" width="16" height="16" rx="2" fill="#5096FF"/>
+<rect x="49" y="20" width="46" height="6" rx="1" fill="#EBF1FA"/>
+<rect x="49" y="28" width="46" height="6" rx="1" fill="#EBF1FA"/>
+<rect x="29" y="42" width="16" height="16" rx="2" fill="#69A5FF"/>
+<rect x="49" y="42" width="46" height="6" rx="1" fill="#EBF1FA"/>
+<rect x="49" y="50" width="46" height="6" rx="1" fill="#EBF1FA"/>
+<rect x="29" y="64" width="16" height="16" rx="2" fill="#9AC2FF"/>
+<rect x="49" y="64" width="46" height="6" rx="1" fill="#EBF1FA"/>
+<rect x="49" y="72" width="46" height="6" rx="1" fill="#EBF1FA"/>
+<rect x="29" y="86" width="16" height="16" rx="2" fill="#C8DEFF"/>
+<rect x="49" y="86" width="46" height="6" rx="1" fill="#EBF1FA"/>
+<rect x="49" y="94" width="46" height="6" rx="1" fill="#EBF1FA"/>
+<circle cx="102" cy="24" r="13" fill="#CEFFD9"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M100.328 28.1219L95.3657 23.4697C95.0533 23.1768 94.5467 23.1768 94.2343 23.4697C93.9219 23.7626 93.9219 24.2374 94.2343 24.5303L99.8343 29.7803C100.173 30.0983 100.733 30.0669 101.029 29.7134L109.829 19.2134C110.102 18.8877 110.042 18.4162 109.694 18.1603C109.347 17.9044 108.844 17.961 108.571 18.2867L100.328 28.1219Z" fill="#1F4E0F"/>
+</svg>

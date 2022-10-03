@@ -4,9 +4,9 @@ body {
     "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  width: 500px;
-  height: 380px;
-  /* border: 1px solid black; */
+  width: 307px;
+  height: 391px;
+  border: 1px solid black;
 }
 
 code {
