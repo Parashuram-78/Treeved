@@ -1,8 +1,8 @@
 import "./App.css";
 import ListPage from "./Components/List_Page/ListPage";
-import Login from "./Components/HomePage/LoginPage";
+import Login from "./Components/Auth_Page/LoginPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SignUp from "./Components/HomePage/SignUp";
+import SignUp from "./Components/Auth_Page/SignUp";
 function App() {
   return (
     <>
