@@ -1,101 +1,94 @@
 import React, { useState } from "react";
 import logo from "../../Images/logo2.png";
-
+import { FcGoogle } from "react-icons/fc";
+import {BiUser} from "react-icons/bi"
 import InputLabel from "@mui/material/InputLabel";
 import Button from "@mui/material/Button";
 import GoogleButton from "react-google-button";
 import "../../App.css";
 
-function Login({ Login, error }) {
-  const [details, setDetails] = useState({ name: "", email: "", password: "" });
+function Login() {
+  const [details, setDetails] = useState({ name: "", password: "" });
 
   const submitHandler = (e) => {
     e.preventDefault();
-
-    Login(details);
   };
   return (
-    <div style={{ width: "500px", height: "500px", position: "relative" }}>
+    <div style={{ width: "307px", height: "391px", position: "relative" }}>
       <form onSubmit={submitHandler}>
-        <div
-          className="form-inner"
-          style={{ width: "500px", height: "500px", position: "relative" }}
-        >
-          <div style={{ marginTop: "10px", marginLeft: "220px" }}>
-            <img src={logo} style={{ marginLeft: "25px" }} alt="" />
-            <h1 style={{ marginTop: "-20px" }}>TreeVed</h1>
-            <h2 style={{ marginTop: "-20px", marginLeft: "20px" }}>Login</h2>
+        <div className="form-inner" style={{ width: "307px", height: "391px", position: "relative" }}>
+          <div style={{ display: "flex", alignItems: "center", flexDirection: "column",marginTop: "10px"}}>
+            <img src={logo} style={{ width: "40px" }} alt="" />
+            <h1 style={{ margin: "0px", fontSize: "20px", color:"#008fe4" }}>TreeVed</h1>
+            {/* <h2 style={{ margin: "0px", fontSize: "20px", marginTop: "15px" }}>Sign In</h2> */}
           </div>
-          {/* {(error !== "")?(<div className="error" style={{}}>{error}
-        <h2>Login</h2>
-        </div>): ""} */}
           <div className="form-group">
-            <InputLabel htmlFor="name" id="name">
-              Username:
-            </InputLabel>
+            <h1 className="label">Username:</h1>
             <input
               type="text"
-              name="username"
-              id="name"
+              placeholder="Enter your username"
               style={{
-                width: "500px",
-                height: "50px",
-                borderRadius: "5px",
-                borderColor: "dodgerblue",
+                width: "239px",
+                height: "26px",
+                padding: "5px 10px",
+                borderRadius: "4px",
+                border: "none",
+                outline: "none",
+
+                background: "#ececec",
               }}
               required
               onChange={(e) => setDetails({ details, name: e.target.value })}
               value={details.name}
             />
-          </div>
-          <div className="form-group">
-            <InputLabel htmlFor="password" id="password">
-              Password:
-            </InputLabel>
+
+            <h1 className="label">Password:</h1>
             <input
               type="password"
-              name="password"
+              placeholder="Enter your password"
+              icon={<BiUser/>}
               style={{
-                width: "500px",
-                height: "50px",
-                borderRadius: "5px",
-                borderColor: "dodgerblue",
+                width: "239px",
+                height: "26px",
+                padding: "5px 10px",
+                borderRadius: "4px",
+                border: "none",
+                outline: "none",
+
+                background: "#ececec",
               }}
               id="password"
-              onChange={(e) =>
-                setDetails({ details, password: e.target.value })
-              }
+              onChange={(e) => setDetails({ details, password: e.target.value })}
               value={details.password}
             />
           </div>
-          <Button
-            type="submit"
-            value="Login"
-            variant="contained"
-            style={{
-              height: "50px",
-              width: "250px",
-              marginLeft: "150px",
-              marginTop: "-15px",
-            }}
-          >
-            Login
-          </Button>
-          <div style={{ marginLeft: "155px" }}>
-            <h3
+
+          <div className="button-group">
+            <button
               style={{
-                marginLeft: "100px",
-                marginBottom: "8px",
-                marginTop: "5px",
+                height: "32px",
+                width: "180px",
+                outline: "none",
+                border: "none",
+                background: "#008fe4",
+                borderRadius: "4px",
+                fontFamily: "Noto Sans",
+                color: "white",
               }}
             >
-              OR
-            </h3>
-            <GoogleButton
+              Sign Up
+            </button>
+
+            <h4 className="separator">OR</h4>
+            <button
+              className="google-btn"
               onClick={() => {
                 console.log("Google button clicked");
               }}
-            />
+            >
+              <FcGoogle />
+              Sign In with Google
+            </button>
           </div>
         </div>
       </form>

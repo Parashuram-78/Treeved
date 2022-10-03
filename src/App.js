@@ -1,19 +1,21 @@
 import "./App.css";
 import ListPage from "./Components/List_Page/ListPage";
 import Login from "./Components/Auth_Page/LoginPage";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SignUp from "./Components/Auth_Page/SignUp";
+import {  Route, Routes, MemoryRouter } from "react-router-dom";
+// import Login from "./Components/Auth_Page/LoginPage";
+import Home from "./Components/Home_Page/Home";
 function App() {
   return (
     <>
       {/* <ListPage />
       <Login /> */}
-      <BrowserRouter>
+      {/* <Home/> */}
+      <MemoryRouter>
         <Routes>
-          <Route exact path="/" element={<SignUp />} />
+          <Route exact path="/" element={<Login />} />
           <Route exact path="/List" element={<ListPage />} />
         </Routes>
-      </BrowserRouter>
+      </MemoryRouter>
     </>
   );
 }
