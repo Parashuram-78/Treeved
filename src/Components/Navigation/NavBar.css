@@ -1,0 +1,56 @@
+.Navbar-box{
+position: absolute;
+width: 307px;
+height: 58px;
+left: 0px;
+top: 0px;
+display: flex;
+align-items:center;
+flex-direction:flex;
+background: #ffffff;
+box-shadow: 0px 4px 12px rgba(26, 59, 79, 0.06);
+
+
+}
+.Avatar{
+display: flex;
+align-items:center;
+flex-direction:flex;
+position: absolute;
+width: 34px;
+height: 34px;
+left: 24px;
+top: 14px;
+font-family: Noto Sans;
+font-size: 14px;
+font-weight: 700;
+line-height: 16px;
+letter-spacing: 0em;
+text-align: left;
+color:#404040;
+}
+.Navbar_button{
+width: 70px;
+height: 25px;
+justify-content: right;
+border-radius: 15px;
+  border: 1px solid #008FE4 ;
+  font-family: Nono Sans;
+  font-size: 14px;
+  font-weight: 700;
+  color:#008FE4;
+  background-color:#ffffff;
+  cursor: pointer;
+
+}
+.Navbar-menu{
+display: flex;
+align-items:center;
+flex-direction:flex;
+position: absolute;
+float: right;
+margin-left: 210px;
+}
+.Navbar_user{
+    margin-left: 5px;
+}
