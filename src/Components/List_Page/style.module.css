@@ -1,0 +1,113 @@
+.navbar_container {
+  width: 307px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+
+  background: #ffffff;
+  box-shadow: 0px 4px 12px rgba(26, 59, 79, 0.06);
+  gap: 12px;
+}
+.nav_text {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 16px;
+  color: #404040;
+}
+
+.list_container {
+  width: 307px;
+  height: 201px;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.list_container::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+.list_container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.list_container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 1px;
+}
+
+/* Handle on hover */
+.list_container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.item_main_container {
+  width: 259px;
+  min-height: 72px;
+  background: #ffffff;
+  box-shadow: 0px 8px 24px rgba(162, 162, 162, 0.18);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.item_title {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
+  color: #008fe4;
+  margin: 0px;
+  width: 235px;
+  height: 19px;
+}
+.item_text {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 16px;
+  color: #858585;
+  width: 235px;
+  height: 33px;
+  margin: 0px;
+}
+.bottom_container {
+  position: absolute;
+  width: 307px;
+  height: 110px;
+  left: 0px;
+  top: 281px;
+
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.65) 0%, #ffffff 29.55%);
+}
+.add_btn {
+  position: absolute;
+  width: 68px;
+  height: 32px;
+  left: 212px;
+  bottom: 32px;
+
+  background: #008fe4;
+  border-radius: 4px;
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: #ffffff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
