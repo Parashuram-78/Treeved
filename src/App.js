@@ -1,7 +1,7 @@
 import "./App.css";
 import ListPage from "./Components/List_Page/ListPage";
 import Login from "./Components/Auth_Page/LoginPage";
-import { Route, Routes, MemoryRouter as BrowserRouter } from "react-router-dom";
+import { Route, Routes, MemoryRouter  } from "react-router-dom";
 import Home from "./Components/Home_Page/Home";
 import Navbar from "./Components/Navigation/NavBar";
 function App() {
@@ -10,13 +10,13 @@ function App() {
       {/* <ListPage />
       <Login /> */}
       {/* <Home/> */}
-      <BrowserRouter>
+      <MemoryRouter>
         <Routes>
-          {/* <Route exact path="/" element={<Login />} /> */}
-          <Route exact path="/" element={<Navbar />} />
-          <Route exact path="/ListPage" element={<ListPage />} />
+          <Route exact path="/" element={<Login />} />
+          
+          <Route exact path="/" element={<ListPage />} />
         </Routes>
-      </BrowserRouter>
+      </MemoryRouter>
     </>
   );
 }
