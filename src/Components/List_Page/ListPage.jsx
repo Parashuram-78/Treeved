@@ -2,13 +2,21 @@ import React from "react";
 import ListItem from "./ListItem";
 import styles from "./style.module.css";
 import { BsArrowLeftShort } from "react-icons/bs";
-
+import { useNavigate } from "react-router-dom";
 const ListPage = () => {
+  let navigate = useNavigate();
+
   return (
     <>
       <div className={styles.main_container}>
         <div className={styles.navbar_container}>
-          <BsArrowLeftShort fontSize="30px" />
+          <BsArrowLeftShort
+            fontSize="30px"
+            cursor="pointer"
+            onClick={() => {
+              navigate("/home");
+            }}
+          />
           <p className={styles.nav_text}>Select list</p>
         </div>
         <div className={styles.list_container}>
