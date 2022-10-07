@@ -5,13 +5,14 @@ import { BiUser } from "react-icons/bi";
 import "../../App.css";
 import axios from "axios";
 import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 function Login() {
-  // const router = useRouter();
-  const [userName, setUserName] = useState("");
+  const router = useNavigate();
+  const [username, setUserName] = useState("");
   const [error_message, setErrorMsg] = useState(false);
   const [password, setPassword] = useState("");
   // const [loading, setLoading] = React.useState(false);
-  // const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   const signinHandler = (e) => {
     e.preventDefault();
@@ -19,14 +20,14 @@ function Login() {
     const config = {
       headers: {
         Accept: "application/json",
+        "Content-Type": "application/json",
       },
     };
     Promise.resolve(
       axios.post(
-        "api-dev.treeved.com/v1/auth​/login​/",
+        "https://api-dev.treeved.com/v1/auth/login/",
         {
-          // provider: "email provider",
-          userName,
+          username,
           password,
         },
         config
@@ -34,22 +35,16 @@ function Login() {
     )
       .then((res) => {
         if (res.status == "200") {
-         // setLoading(false);
+          // setLoading(false);
           console.log(res);
-          localStorage.setItem("userId", res.data.result.userId);
-          localStorage.setItem(
-            "accessTokenTreeVed",
-            res.data.result.token.accessToken
-          );
-          localStorage.setItem(
-            "refreshTokenTreeved",
-            res.data.result.token.refreshToken
-          );
-          // dispatch(userLoginSuccess(res.config.data));
-          // enqueueSnackbar("Logged in successfully", {
-          //   variant: "success",
-          // });
-          //router.push("/");
+          //localStorage.setItem("userId", res.data.result.userId);
+          localStorage.setItem("accessTokenTreeVed", res.data.access);
+          localStorage.setItem("refreshTokenTreeved", res.data.refresh);
+
+          enqueueSnackbar("Logged in successfully", {
+            variant: "success",
+          });
+          router("/Home");
         }
       })
       .catch((e) => {
@@ -62,20 +57,18 @@ function Login() {
             setErrorMsg("Please Signup first in the platform");
             message = "Please Signup first in the platform";
           }
-          // enqueueSnackbar(message, {
-          //   variant: "error",
-          // });
+          enqueueSnackbar(message, {
+            variant: "error",
+          });
           //setLoading(false);
           //dispatch(userLoginFail(e.response.data.error));
         }
       });
   };
-  const submitHandler = (e) => {
-    e.preventDefault();
-  };
+
   return (
     <div style={{ width: "307px", height: "391px", position: "relative" }}>
-      <form onSubmit={submitHandler}>
+      <form onSubmit={signinHandler}>
         <div
           className="form-inner"
           style={{ width: "307px", height: "391px", position: "relative" }}

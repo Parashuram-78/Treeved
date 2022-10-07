@@ -3,10 +3,11 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import PrivacyPolicy from "../PrivacyPolicy/PrivacyPolicy";
 
 const options = [
   "LogOut",
-  "Privacy Policy",
+  "PrivacyPolicy",
 ];
 
 const ITEM_HEIGHT = 48;
@@ -51,12 +52,15 @@ export default function LongMenu() {
         {options.map((option) => (
           <MenuItem
             key={option}
-            selected={option === "Pyxis"}
+            to="PrivacyPolicy"
+            //selected={option === "Pyxis"}
             onClick={handleClose}
           >
-            {option}
+            
           </MenuItem>
+          
         ))}
+        {/* <MenuItem><PrivacyPolicy/></MenuItem> */}
       </Menu>
     </div>
   );
