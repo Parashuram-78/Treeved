@@ -9,13 +9,15 @@ import { AiFillStar } from "react-icons/ai";
 import { AiOutlinePlus } from "react-icons/ai";
 import Navbar from "../Navigation/NavBar";
 import { Button } from "@mui/material";
+import { useEffect } from "react";
 const Home = () => {
   const [url, setUrl] = useState("");
   const [tags, setTags] = useState("");
   const [rating, setRating] = useState(4);
   const [bookmark, setBookmark] = useState(false);
   const [tick, setTick] = useState(false);
-  const [copied, setCopied] = useState(false);
+  
+  const [copied, setCopied] = useState("");
 
   function copy() {
     const el = document.createElement("input");
@@ -24,9 +26,12 @@ const Home = () => {
     el.select();
     document.execCommand("copy");
     document.body.removeChild(el);
-    setCopied(true);
+    setCopied(el.value);
   }
-
+  useEffect(() => {
+    copy();
+  },[]
+)
   return (
     <>
       <header className={styles.header}>
@@ -44,18 +49,12 @@ const Home = () => {
             >
               URL*
             </h1>
-            <button
-              className={styles.add_btn}
-              style={{ marginLeft: "115px" }}
-              onClick={copy}
-            >
-              {!copied ? "Copy link" : "Copied!"}
-            </button>
           </div>
           <input
             type="text"
             className={styles.input}
             placeholder="Paste your link here"
+            value={copied}
           />
         </div>
         <div className={styles.input_div}>
