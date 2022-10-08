@@ -13,6 +13,7 @@ const ListPage = () => {
           <BsArrowLeftShort
             fontSize="30px"
             cursor="pointer"
+   
             onClick={() => {
               navigate("/home");
             }}

@@ -15,6 +15,7 @@ function App() {
           <Route exact path="/ListPage" element={<ListPage />} />
           <Route exact path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route exact path="*" element={<Login />} />
+          <Route exact path="/PrivacyPolicy" element={<PrivacyPolicy />} />
         </Routes>
       </BrowserRouter>
     </>
