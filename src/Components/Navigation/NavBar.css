@@ -29,13 +29,13 @@ top: 14px; */
   color: #404040;
 }
 .Navbar_button {
-  width: 70px;
-  height: 25px;
+  width: 38.8px;
+  height: 14.16px;
   justify-content: right;
   border-radius: 15px;
   border: 1px solid #008fe4;
-  font-family: Nono Sans;
-  font-size: 14px;
+  font-family: Noto Sans;
+  font-size: 8px;
   font-weight: 700;
   color: #008fe4;
   background-color: #ffffff;

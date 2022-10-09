@@ -10,14 +10,24 @@ import { AiOutlinePlus } from "react-icons/ai";
 import Navbar from "../Navigation/NavBar";
 import { Button } from "@mui/material";
 import { useEffect } from "react";
+import { PostAuthRequest } from "../Helper/AuthRequest";
+import { useSnackbar } from "notistack";
+import { Link, useNavigate } from "react-router-dom";
+import { setUser, getUser } from "../../features/User/UserSlice";
+import { useSelector, useDispatch } from "react-redux";
+
 const Home = () => {
   const [url, setUrl] = useState("");
   const [tags, setTags] = useState("");
   const [rating, setRating] = useState(4);
   const [bookmark, setBookmark] = useState(false);
   const [tick, setTick] = useState(false);
-  
+
   const [copied, setCopied] = useState("");
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+  const user = useSelector(getUser);
 
   function copy() {
     const el = document.createElement("input");
@@ -26,12 +36,31 @@ const Home = () => {
     el.select();
     document.execCommand("copy");
     document.body.removeChild(el);
+    setUrl(el.value);
     setCopied(el.value);
   }
   useEffect(() => {
     copy();
-  },[]
-)
+  }, []);
+
+  const submitHandler = () => {
+    const successFxn = (res) => {
+      navigate("/success/dairy");
+    };
+    const body = {
+      user: {
+        username: user.user.username,
+        bio: user.user.bio,
+      },
+      text: tags,
+      url: url,
+      resource_type: "string",
+      topics: ["string"],
+      visibility: "only_me",
+      rating: rating,
+    };
+    PostAuthRequest("diary-entry/add/", body, successFxn, enqueueSnackbar, navigate);
+  };
   return (
     <>
       <header className={styles.header}>
@@ -50,12 +79,7 @@ const Home = () => {
               URL*
             </h1>
           </div>
-          <input
-            type="text"
-            className={styles.input}
-            placeholder="Paste your link here"
-            value={copied}
-          />
+          <input type="text" className={styles.input} placeholder="Paste your link here" defaultValue={copied} />
         </div>
         <div className={styles.input_div}>
           <h1
@@ -66,11 +90,7 @@ const Home = () => {
           >
             Add more details
           </h1>
-          <input
-            type="text"
-            className={styles.input}
-            placeholder="Add tags or description"
-          />
+          <input type="text" className={styles.input} placeholder="Add tags or description" />
         </div>
         <div className={styles.input_div}>
           <h1 className={styles.label}>Rating *</h1>
@@ -97,23 +117,13 @@ const Home = () => {
             <div
               className={styles.side_label_bar}
               style={{
-                backgroundColor:
-                  rating >= 4
-                    ? "#CEFFD9"
-                    : rating >= 3 && rating < 4
-                    ? "#FFFDCE"
-                    : "#FFD7CE",
+                backgroundColor: rating >= 4 ? "#CEFFD9" : rating >= 3 && rating < 4 ? "#FFFDCE" : "#FFD7CE",
               }}
             >
               <label
                 className={styles.side_label}
                 style={{
-                  color:
-                    rating >= 4
-                      ? "#1F4E0F"
-                      : rating >= 3 && rating < 4
-                      ? "#875323"
-                      : "#4E130F",
+                  color: rating >= 4 ? "#1F4E0F" : rating >= 3 && rating < 4 ? "#875323" : "#4E130F",
                 }}
               >
                 {rating}
@@ -130,15 +140,19 @@ const Home = () => {
               src={bookmark ? bookmark_saved_img : bookmark_img}
               onClick={() => setBookmark(!bookmark)}
             />
-            <img
-              className={styles.icon}
-              src={tick ? tick_green_img : tick_img}
-              onClick={() => setTick(!tick)}
-            />
+            <img className={styles.icon} src={tick ? tick_green_img : tick_img} onClick={() => setTick(!tick)} />
           </div>
           <div className={styles.bottom_right}>
-            <button className={styles.add_btn}>Add to Diary</button>
-            {/* <button className={styles.add_list_btn}>Add to List</button> */}
+            {user && user.stateType == "dairy" && (
+              <button className={styles.add_btn} onClick={() => submitHandler()}>
+                Add to Diary
+              </button>
+            )}
+            {user && user.stateType == "list" && (
+              <Link to="/ListPage" state={{ url: url, rating: rating }}>
+                <button className={styles.add_btn}>Add to List</button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
