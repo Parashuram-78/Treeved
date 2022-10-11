@@ -45,14 +45,14 @@ export const GetAuthRequest = (url, successFunction, enqueueSnackbar, navigate /
                                     // dispatch(setLoading(false));
                                     // setLoading(false);
                                     window.localStorage.clear();
-                                    // navigate("/");
+                                    navigate("/login");
                                     console.log(error)
                                     return;
                                 });
                         } else {
                             // dispatch(setLoading(false));
                             console.log(error);
-                            // navigate("/");
+                            navigate("/login");
                             return;
                         }
                     });
@@ -60,7 +60,7 @@ export const GetAuthRequest = (url, successFunction, enqueueSnackbar, navigate /
 
                 // window.localStorage.clear();
                 // dispatch(setLoading(false));
-                navigate("/");
+                navigate("/login");
                 return;
             }
         };
@@ -70,7 +70,7 @@ export const GetAuthRequest = (url, successFunction, enqueueSnackbar, navigate /
     } catch (error) {
         // dispatch(setLoading(false));
         console.log(error)
-        navigate("/");
+        navigate("/login");
         return;
     }
 };
@@ -121,7 +121,7 @@ export const PostAuthRequest = (url, body, successFunction, enqueueSnackbar, nav
                                     });
                                     // setLoading(false);
                                     // window.localStorage.clear();
-                                    navigate("/");
+                                    navigate("/login");
                                     console.log(error)
                                     return;
                                 });
@@ -130,7 +130,8 @@ export const PostAuthRequest = (url, body, successFunction, enqueueSnackbar, nav
                                 variant: "error",
                             });
                             // setLoading(false);
-                            alert("Some error occurred while submitting. Please try again"); console.log(error);
+                            // alert("Some error occurred while submitting. Please try again"); 
+                            console.log(error);
                         }
                     });
             } else {
@@ -139,8 +140,8 @@ export const PostAuthRequest = (url, body, successFunction, enqueueSnackbar, nav
                 });
                 // window.localStorage.clear();
                 // setLoading(false);
-                navigate("/");
-                alert("Access token unavailable.");
+                navigate("/login");
+                // alert("Access token unavailable.");
                 return;
             }
         };
@@ -205,7 +206,7 @@ export const PatchAuthRequest = (url, body, successFunction, enqueueSnackbar, na
                                     });
                                     // setLoading(false);
                                     // window.localStorage.clear();
-                                    navigate("/");
+                                    navigate("/login");
                                     console.log(error)
                                     return;
                                 });
@@ -214,7 +215,8 @@ export const PatchAuthRequest = (url, body, successFunction, enqueueSnackbar, na
                                 variant: "error",
                             });
                             // setLoading(false);
-                            alert("Some error occurred while submitting. Please try again"); console.log(error);
+                            // alert("Some error occurred while submitting. Please try again"); 
+                            console.log(error);
                         }
                     });
             } else {
@@ -223,8 +225,8 @@ export const PatchAuthRequest = (url, body, successFunction, enqueueSnackbar, na
                 });
                 // window.localStorage.clear();
                 // setLoading(false);
-                navigate("/");
-                alert("Access token unavailable.");
+                navigate("/login");
+                // alert("Access token unavailable.");
                 return;
             }
         };

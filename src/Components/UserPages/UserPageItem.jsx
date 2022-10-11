@@ -11,7 +11,7 @@ const navigate = useNavigate()
     dispatch(setCurrentStateUserName(title))
     dispatch(setCurrentStateProfileImage(profileImage))
     dispatch(setPageId(pageId))
-    navigate("/Home")
+    navigate("/")
   }
   return (
     <>

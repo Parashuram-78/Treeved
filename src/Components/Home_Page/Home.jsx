@@ -1,3 +1,4 @@
+/*global chrome*/
 import React, { useState, useRef } from "react";
 import styles from "./styles.module.css";
 import { BiSend, BiListUl } from "react-icons/bi";
@@ -30,14 +31,18 @@ const Home = () => {
   const user = useSelector(getUser);
 
   function copy() {
-    const el = document.createElement("input");
-    el.value = window.location.href;
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand("copy");
-    document.body.removeChild(el);
-    setUrl(el.value);
-    setCopied(el.value);
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+      let tabUrl = tabs[0].url;
+      // use `url` here inside the callback because it's asynchronous!
+      const el = document.createElement("input");
+      el.value = tabUrl;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+      setUrl(el.value);
+      setCopied(el.value);
+    });
   }
   useEffect(() => {
     copy();
@@ -70,27 +75,28 @@ const Home = () => {
         <div className={styles.input_div}>
           <div style={{ display: "flex", alignItems: "center" }}>
             {" "}
-            <h1
-              className={styles.label}
-              onChange={(e) => {
-                setUrl(e.target.value);
-              }}
-            >
-              URL*
-            </h1>
+            <h1 className={styles.label}>URL*</h1>
           </div>
-          <input type="text" className={styles.input} placeholder="Paste your link here" defaultValue={copied} />
+          <input
+            type="text"
+            className={styles.input}
+            placeholder="Paste your link here"
+            defaultValue={copied}
+            onChange={(e) => {
+              setUrl(e.target.value);
+            }}
+          />
         </div>
         <div className={styles.input_div}>
-          <h1
-            className={styles.label}
+          <h1 className={styles.label}>Add more details</h1>
+          <input
+            type="text"
+            className={styles.input}
+            placeholder="Add tags or description"
             onChange={(e) => {
               setTags(e.target.value);
             }}
-          >
-            Add more details
-          </h1>
-          <input type="text" className={styles.input} placeholder="Add tags or description" />
+          />
         </div>
         <div className={styles.input_div}>
           <h1 className={styles.label}>Rating *</h1>

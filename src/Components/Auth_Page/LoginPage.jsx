@@ -44,16 +44,14 @@ function Login() {
           enqueueSnackbar("Logged in successfully", {
             variant: "success",
           });
-          router("/Home");
+          router("/");
         }
       })
       .catch((e) => {
         console.log(e);
         let message = "Login failed Invalid username/password !";
         if (e.response) {
-          if (
-            e.response.data.message === "Please Signup first in the platform"
-          ) {
+          if (e.response.data.message === "Please Signup first in the platform") {
             setErrorMsg("Please Signup first in the platform");
             message = "Please Signup first in the platform";
           }
@@ -69,10 +67,7 @@ function Login() {
   return (
     <div style={{ width: "307px", height: "391px", position: "relative" }}>
       <form onSubmit={signinHandler}>
-        <div
-          className="form-inner"
-          style={{ width: "307px", height: "391px", position: "relative" }}
-        >
+        <div className="form-inner" style={{ width: "307px", height: "391px", position: "relative" }}>
           <div
             style={{
               display: "flex",
@@ -82,9 +77,7 @@ function Login() {
             }}
           >
             <img src={logo} style={{ width: "40px" }} alt="" />
-            <h1 style={{ margin: "0px", fontSize: "20px", color: "#008fe4" }}>
-              TreeVed
-            </h1>
+            <h1 style={{ margin: "0px", fontSize: "20px", color: "#008fe4" }}>TreeVed</h1>
           </div>
           {error_message && <p>{`${error_message}`}</p>}
           <div className="form-group">

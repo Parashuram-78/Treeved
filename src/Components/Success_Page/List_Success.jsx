@@ -19,7 +19,7 @@ const List_Success = () => {
           </div>
           <div className={styles.bottom_container}>
             <button className={styles.close_btn}>Close</button>
-            <button className={styles.home_btn} onClick={() => navigate("/Home")}>
+            <button className={styles.home_btn} onClick={() => navigate("/")}>
               Home
             </button>
           </div>

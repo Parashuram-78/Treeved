@@ -32,6 +32,7 @@ const ListPage = () => {
         enqueueSnackbar("Sucessfully added to list", {
           variant: "success",
         });
+        navigate("/success/list")
       };
       PatchAuthRequest(`list/${listId}/add-to-list/` + res.data.content.id, body, successFunction, enqueueSnackbar, navigate);
     };
@@ -45,7 +46,7 @@ const ListPage = () => {
             fontSize="30px"
             cursor="pointer"
             onClick={() => {
-              navigate("/home");
+              navigate("/");
             }}
           />
           <p className={styles.nav_text}>Select list</p>
