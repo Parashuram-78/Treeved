@@ -1,8 +1,10 @@
 import React from "react";
 import styles from "./style.module.css"
 import dairy from "../../Images/dairy.svg"
+import { useNavigate } from "react-router-dom";
 
 const Dairy_Success = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div className={styles.main_container}>
@@ -17,7 +19,7 @@ const Dairy_Success = () => {
             </div>
             <div className={styles.bottom_container}>
                 <button className={styles.close_btn}>Close</button>
-                <button className={styles.home_btn}>Home</button>
+                <button className={styles.home_btn} onClick={() => navigate("/Home")}>Home</button>
             </div>
         </div>
       </div>
