@@ -48,7 +48,7 @@ const Userpage = () => {
             fontSize="30px"
             cursor="pointer"
             onClick={() => {
-              navigate("/home");
+              navigate("/");
             }}
           />
           <p className={styles.nav_text}>Select Pages</p>

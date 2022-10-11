@@ -1,14 +1,15 @@
 {
   "short_name": "TreeVed-Extension-React",
   "name": "TreeVed-Extension-React",
+  "description": "TreeVed is a platform for the discovery and sharing of knowledge and wisdom.",
   "version": "1.0.0",
   "manifest_version": 3,
   "permissions": ["storage", "tabs", "activeTab"],
   "action": {
     "default_popup": "index.html",
     "default_icon": {
-      "16": "logo192.png",
-      "128": "logo512.png"
+      "16": "logo2.png",
+      "128": "logo2.png"
     }
   }
 }

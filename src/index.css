@@ -6,7 +6,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   width: 307px;
   height: 391px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 code {
