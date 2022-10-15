@@ -131,6 +131,15 @@ textarea:focus {
   align-items: center;
   gap: 12px;
 }
+.bottom_dairy{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width:259px;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top:-20px
+}
 .add_btn {
   width: 116px;
   height: 32px;
@@ -146,8 +155,8 @@ textarea:focus {
   border: none;
   cursor: pointer;
 }
-/* .add_dairy_btn {
-  width: 104px;
+.share_btn {
+  width: 259px;
   height: 32px;
   background: #ffffff;
   border-radius: 4px;
@@ -160,4 +169,8 @@ textarea:focus {
   outline: none;
   border: none;
   cursor: pointer;
-} */
+  border: 2px solid #008fe4;
+}
+.link{
+  text-decoration: none;
+}

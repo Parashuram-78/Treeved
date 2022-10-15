@@ -135,6 +135,7 @@ function Login() {
                 borderRadius: "4px",
                 fontFamily: "Noto Sans",
                 color: "white",
+                cursor: "pointer"
               }}
               onClick={(e) => signinHandler(e)}
             >
