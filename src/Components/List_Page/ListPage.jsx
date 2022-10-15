@@ -11,20 +11,37 @@ import { getUser } from "../../features/User/UserSlice";
 const ListPage = () => {
   let navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   const { url, rating } = location.state;
   const [list, setList] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const [listId, setListId] = useState();
   const user = useSelector(getUser);
-  const pageId = user.pageId.toString();
+  const pageId = user.pageId;
+  const userName = user.userName;
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const getLists = () => {
+    if (user.stateType === "list") {
+      const successFxn = (res) => {
+        console.log(res);
+        setList(list.concat(res.data.results));
+      };
+      GetAuthRequest(`page/${pageId}/list/all/?page=${pageNumber}`, successFxn, enqueueSnackbar, navigate);
+    } else if (user.stateType === "dairy") {
+      const successFxn = (res) => {
+        console.log(res);
+        setList(list.concat(res.data.results));
+      };
+
+      GetAuthRequest(`list/${userName}/user-lists?page=${pageNumber}`, successFxn, enqueueSnackbar, navigate);
+    }
+  };
+
   useEffect(() => {
-    const successFxn = (res) => {
-      console.log(res);
-      setList(...list, res.data.results);
-    };
-    // page/"+{pageId}+"/list/all/?page=1
-    GetAuthRequest(`page/${pageId}/list/all/?page=1`, successFxn, enqueueSnackbar, navigate);
+    getLists();
   }, []);
+
   const submitHandler = () => {
     const successFxn = (res) => {
       const body = { rating: rating };
@@ -32,7 +49,7 @@ const ListPage = () => {
         enqueueSnackbar("Sucessfully added to list", {
           variant: "success",
         });
-        navigate("/success/list")
+        navigate("/success/list");
       };
       PatchAuthRequest(`list/${listId}/add-to-list/` + res.data.content.id, body, successFunction, enqueueSnackbar, navigate);
     };
