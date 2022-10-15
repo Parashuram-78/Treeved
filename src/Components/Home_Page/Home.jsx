@@ -16,10 +16,11 @@ import { useSnackbar } from "notistack";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser, getUser } from "../../features/User/UserSlice";
 import { useSelector, useDispatch } from "react-redux";
+import {TagsGenerator} from "../Helper/tags"
 
 const Home = () => {
   const [url, setUrl] = useState("");
-  const [tags, setTags] = useState("");
+  const [desc, setDesc] = useState("");
   const [rating, setRating] = useState(4);
   const [bookmark, setBookmark] = useState(false);
   const [tick, setTick] = useState(false);
@@ -30,24 +31,31 @@ const Home = () => {
   const dispatch = useDispatch();
   const user = useSelector(getUser);
 
-  function copy() {
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-      let tabUrl = tabs[0].url;
-      // use `url` here inside the callback because it's asynchronous!
-      const el = document.createElement("input");
-      el.value = tabUrl;
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand("copy");
-      document.body.removeChild(el);
-      setUrl(el.value);
-      setCopied(el.value);
-    });
-  }
-  useEffect(() => {
-    copy();
-  }, []);
+  // function copy() {
+  //   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+  //     let tabUrl = tabs[0].url;
+  //     // use `url` here inside the callback because it's asynchronous!
+  //     const el = document.createElement("input");
+  //     el.value = tabUrl;
+  //     document.body.appendChild(el);
+  //     el.select();
+  //     document.execCommand("copy");
+  //     document.body.removeChild(el);
+  //     setUrl(el.value);
+  //     setCopied(el.value);
+  //   });
+  // }
+  // useEffect(() => {
+  //   copy();
+  // }, []);
 
+  const check = () => {
+    if (url.toString().trim().startsWith("https://") || url.toString().trim().startsWith("http://")) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   const submitHandler = () => {
     const successFxn = (res) => {
       navigate("/success/dairy");
@@ -57,15 +65,55 @@ const Home = () => {
         username: user.user.username,
         bio: user.user.bio,
       },
-      text: tags,
+      text: desc,
       url: url,
       resource_type: "string",
-      topics: ["string"],
+      topics: TagsGenerator(""+desc+""),
       visibility: "only_me",
       rating: rating,
     };
-    PostAuthRequest("diary-entry/add/", body, successFxn, enqueueSnackbar, navigate);
+    if (check()) {
+      PostAuthRequest("diary-entry/add/", body, successFxn, enqueueSnackbar, navigate);
+    } else {
+      enqueueSnackbar("Url must start with https:// or http://", { variant: "error" });
+    }
   };
+
+  const shareHandler = () => {
+    const successFxn = (res) => {
+      console.log(res)
+      const body = {
+        message: "Diary entry shared as post.",
+        "status code": 201,
+        success: "True",
+      };
+      const success_share_Fxn = (res) => {
+        enqueueSnackbar("Diary entry shared as post.", {
+          variant: "success",
+        });
+        navigate("/success/dairy");
+      };
+      PostAuthRequest(`diary-entry/${res.data.data.id}/share-as-post`, body, success_share_Fxn, enqueueSnackbar, navigate);
+    };
+    const body = {
+      user: {
+        username: user.user.username,
+        bio: user.user.bio,
+      },
+      text: desc,
+      url: url,
+      resource_type: "string",
+      topics: TagsGenerator(desc),
+      visibility: "only_me",
+      rating: rating,
+    };
+    if (check()) {
+      PostAuthRequest("diary-entry/add/", body, successFxn, enqueueSnackbar, navigate);
+    } else {
+      enqueueSnackbar("Url must start with https:// or http://", { variant: "error" });
+    }
+  };
+
   return (
     <>
       <header className={styles.header}>
@@ -94,7 +142,7 @@ const Home = () => {
             className={styles.input}
             placeholder="Add tags or description"
             onChange={(e) => {
-              setTags(e.target.value);
+              setDesc(e.target.value);
             }}
           />
         </div>
@@ -141,23 +189,36 @@ const Home = () => {
 
         <div className={styles.bottom_container}>
           <div className={styles.bottom_left}>
-            <img
+            {/* <img
               className={styles.icon}
               src={bookmark ? bookmark_saved_img : bookmark_img}
               onClick={() => setBookmark(!bookmark)}
             />
-            <img className={styles.icon} src={tick ? tick_green_img : tick_img} onClick={() => setTick(!tick)} />
+            <img className={styles.icon} src={tick ? tick_green_img : tick_img} onClick={() => setTick(!tick)} /> */}
           </div>
           <div className={styles.bottom_right}>
             {user && user.stateType == "dairy" && (
-              <button className={styles.add_btn} onClick={() => submitHandler()}>
-                Add to Diary
-              </button>
+              <div className={styles.bottom_dairy}>
+                <Link to="/ListPage" className={styles.link} state={{ url: url, rating: rating }}>
+                  <button className={styles.add_btn}>Add to List</button>
+                </Link>
+                <button className={styles.add_btn} onClick={() => submitHandler()}>
+                  Add to Diary
+                </button>
+                <button className={styles.share_btn} onClick={() => shareHandler()}>
+                  Add to Diary and Share as Post
+                </button>
+              </div>
             )}
             {user && user.stateType == "list" && (
-              <Link to="/ListPage" state={{ url: url, rating: rating }}>
-                <button className={styles.add_btn}>Add to List</button>
-              </Link>
+              <div className={styles.bottom_dairy} style={{ justifyContent: "center" }}>
+                <Link to="/ListPage" className={styles.link} state={{ url: url, rating: rating }}>
+                  <button className={styles.add_btn}>Add to List</button>
+                </Link>
+                <button className={styles.share_btn} onClick={() => shareHandler()}>
+                  Add to Diary and Share as Post
+                </button>
+              </div>
             )}
           </div>
         </div>

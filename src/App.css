@@ -22,7 +22,8 @@
   border: 1px solid black;
   background-color: #ffffff;
   gap: 10px;
-  outline: none
+  outline: none;
+  cursor: pointer;
 }
 .separator {
   font-family: "Noto Sans";

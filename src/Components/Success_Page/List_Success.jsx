@@ -15,7 +15,7 @@ const List_Success = () => {
           </div>
           <div className={styles.middle_container}>
             <h1 className={styles.text}>Added to list</h1>
-            <p className={styles.sub_text}>Your link was saved to **** list</p>
+            <p className={styles.sub_text}>Your link was saved to the list</p>
           </div>
           <div className={styles.bottom_container}>
             <button className={styles.close_btn}>Close</button>

@@ -11,6 +11,7 @@ import Userpage from "./Components/UserPages/Userpage";
 function App() {
   return (
     <>
+      
       <BrowserRouter>
         <Routes>
           <Route exact path="/login" element={<Login />} />
@@ -18,11 +19,12 @@ function App() {
           <Route exact path="/ListPage" element={<ListPage />} />
           <Route exact path="/UserPages" element={<Userpage />} />
           <Route exact path="/PrivacyPolicy" element={<PrivacyPolicy />} />
-          <Route exact path="/success/dairy" element={<Dairy_Success/>} />
+          <Route exact path="/success/dairy" element={<Dairy_Success />} />
           <Route exact path="/success/list" element={<List_Success />} />
-          
           <Route exact path="*" element={<Login />} />
           <Route exact path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+          
+        
         </Routes>
       </BrowserRouter>
     </>

@@ -4,9 +4,11 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PrivacyPolicy from "../PrivacyPolicy/PrivacyPolicy";
+import { useNavigate } from "react-router";
+
 
 const options = [
-  "LogOut",
+  
   "PrivacyPolicy",
 ];
 
@@ -14,12 +16,22 @@ const ITEM_HEIGHT = 48;
 
 export default function LongMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleClose1 = () => {
+    setAnchorEl(null);
+    navigate("/login");
+    
+  };
+  const handleClose2 = () => {
+    setAnchorEl(null);
+    navigate("/PrivacyPolicy");
   };
 
   return (
@@ -49,18 +61,25 @@ export default function LongMenu() {
           },
         }}
       >
-        {options.map((option) => (
-          <MenuItem
-            key={option}
-            to="PrivacyPolicy"
-            //selected={option === "Pyxis"}
-            onClick={handleClose}
-          >
-            
-          </MenuItem>
+        {/* {options.map((option) => (
           
-        ))}
-        {/* <MenuItem><PrivacyPolicy/></MenuItem> */}
+          
+        ))} */}
+        <MenuItem
+          // key={option}
+          //selected={option === "Pyxis"}
+          onClick={handleClose1}
+          style={{color:"red"}}
+        >
+         Sign Out
+        </MenuItem>
+        <MenuItem
+          // key={option}
+          //selected={option === "Pyxis"}
+          onClick={handleClose2}
+        >
+         Privacy Policy
+        </MenuItem>
       </Menu>
     </div>
   );
