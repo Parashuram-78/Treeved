@@ -26,8 +26,9 @@ export default function LongMenu() {
   };
   const handleClose1 = () => {
     setAnchorEl(null);
+
+    window.localStorage.clear();
     navigate("/login");
-    
   };
   const handleClose2 = () => {
     setAnchorEl(null);
