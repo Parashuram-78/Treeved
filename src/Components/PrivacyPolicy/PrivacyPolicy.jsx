@@ -15,11 +15,11 @@ const PrivacyPolicy = () => {
           height: "391px",
           overflowY: "scroll",
           overflowX: " hidden ",
-          marginTop: "45px",
+          marginTop: "55px",
         }}
       >
         <div style={{display:"flex",alignItems:"center"}}>
-          <h3>Privacy Policy </h3>
+          <h3 style={{}}>Privacy Policy </h3>
           <button  style={{ width: "50px", height: "25px",textAlign:"center", background:"white",cursor:"pointer",marginLeft:"100px" ,borderRadius:"3px",color:"red",border:"1px solid red"}}onClick={ClickHandler}>Close</button>
         </div>
 

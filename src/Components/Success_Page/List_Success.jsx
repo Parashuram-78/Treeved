@@ -18,7 +18,7 @@ const List_Success = () => {
             <p className={styles.sub_text}>Your link was saved to the list</p>
           </div>
           <div className={styles.bottom_container}>
-            <button className={styles.close_btn}>Close</button>
+            {/* <button className={styles.close_btn}>Close</button> */}
             <button className={styles.home_btn} onClick={() => navigate("/")}>
               Home
             </button>
