@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const GetAuthRequest = (url, successFunction, enqueueSnackbar, navigate /*,dispatch*/) => {
-    // dispatch(setLoading(true));
+export const GetAuthRequest = (url, successFunction, enqueueSnackbar, navigate, setLoading) => {
+    setLoading(true);
     try {
         const getdata = (requestCount) => {
             const atoken = window.localStorage.getItem("accessTokenTreeVed");
@@ -23,7 +23,7 @@ export const GetAuthRequest = (url, successFunction, enqueueSnackbar, navigate /
                 )
                     .then((res) => {
                         successFunction(res)
-                        // dispatch(setLoading(false));
+                        setLoading(false)
                         return;
                     })
                     .catch((error) => {
@@ -42,24 +42,24 @@ export const GetAuthRequest = (url, successFunction, enqueueSnackbar, navigate /
                                     return;
                                 })
                                 .catch((error) => {
-                                    // dispatch(setLoading(false));
-                                    // setLoading(false);
+                                    setLoading(false);
                                     window.localStorage.clear();
                                     navigate("/login");
                                     console.log(error)
                                     return;
                                 });
                         } else {
-                            // dispatch(setLoading(false));
+                            setLoading(false);
                             console.log(error);
-                            navigate("/login");
+                            console.log("Yo bro");
+                            // navigate("/login");
                             return;
                         }
                     });
             } else {
 
-                // window.localStorage.clear();
-                // dispatch(setLoading(false));
+                window.localStorage.clear();
+                setLoading(false);
                 navigate("/login");
                 return;
             }
@@ -68,16 +68,16 @@ export const GetAuthRequest = (url, successFunction, enqueueSnackbar, navigate /
         getdata(0);
         return;
     } catch (error) {
-        // dispatch(setLoading(false));
+        setLoading(false);
         console.log(error)
         navigate("/login");
         return;
     }
 };
 
-export const PostAuthRequest = (url, body, successFunction, enqueueSnackbar, navigate) => {
+export const PostAuthRequest = (url, body, successFunction, enqueueSnackbar, navigate, setLoading) => {
 
-    // setLoading(true);
+    setLoading(true);
     try {
         const getdata = (requestCount) => {
             const atoken = window.localStorage.getItem("accessTokenTreeVed");
@@ -99,6 +99,7 @@ export const PostAuthRequest = (url, body, successFunction, enqueueSnackbar, nav
                 )
                     .then((res) => {
                         successFunction(res)
+                        setLoading(false)
                         return;
                     })
                     .catch((error) => {
@@ -119,8 +120,8 @@ export const PostAuthRequest = (url, body, successFunction, enqueueSnackbar, nav
                                     enqueueSnackbar("You are not logged in", {
                                         variant: "error",
                                     });
-                                    // setLoading(false);
-                                    // window.localStorage.clear();
+                                    setLoading(false);
+                                    window.localStorage.clear();
                                     navigate("/login");
                                     console.log(error)
                                     return;
@@ -129,7 +130,7 @@ export const PostAuthRequest = (url, body, successFunction, enqueueSnackbar, nav
                             enqueueSnackbar("Some error occurred while submitting. Please try again", {
                                 variant: "error",
                             });
-                            // setLoading(false);
+                            setLoading(false);
                             // alert("Some error occurred while submitting. Please try again"); 
                             console.log(error);
                         }
@@ -138,8 +139,8 @@ export const PostAuthRequest = (url, body, successFunction, enqueueSnackbar, nav
                 enqueueSnackbar("You need to login first", {
                     variant: "error",
                 });
-                // window.localStorage.clear();
-                // setLoading(false);
+                window.localStorage.clear();
+                setLoading(false);
                 navigate("/login");
                 // alert("Access token unavailable.");
                 return;
@@ -152,7 +153,7 @@ export const PostAuthRequest = (url, body, successFunction, enqueueSnackbar, nav
         enqueueSnackbar("Some error occured", {
             variant: "error",
         });
-        // setLoading(false);
+        setLoading(false);
         console.log(error)
         return;
     }
@@ -160,9 +161,9 @@ export const PostAuthRequest = (url, body, successFunction, enqueueSnackbar, nav
 
 
 
-export const PatchAuthRequest = (url, body, successFunction, enqueueSnackbar, navigate) => {
+export const PatchAuthRequest = (url, body, successFunction, enqueueSnackbar, navigate,setLoading) => {
 
-    // setLoading(true);
+    setLoading(true);
     try {
         const getdata = (requestCount) => {
             const atoken = window.localStorage.getItem("accessTokenTreeVed");
@@ -184,6 +185,7 @@ export const PatchAuthRequest = (url, body, successFunction, enqueueSnackbar, na
                 )
                     .then((res) => {
                         successFunction(res)
+                        setLoading(false)
                         return;
                     })
                     .catch((error) => {
@@ -204,8 +206,8 @@ export const PatchAuthRequest = (url, body, successFunction, enqueueSnackbar, na
                                     enqueueSnackbar("You are not logged in", {
                                         variant: "error",
                                     });
-                                    // setLoading(false);
-                                    // window.localStorage.clear();
+                                    setLoading(false);
+                                    window.localStorage.clear();
                                     navigate("/login");
                                     console.log(error)
                                     return;
@@ -214,7 +216,7 @@ export const PatchAuthRequest = (url, body, successFunction, enqueueSnackbar, na
                             enqueueSnackbar("Some error occurred while submitting. Please try again", {
                                 variant: "error",
                             });
-                            // setLoading(false);
+                            setLoading(false);
                             // alert("Some error occurred while submitting. Please try again"); 
                             console.log(error);
                         }
@@ -223,8 +225,8 @@ export const PatchAuthRequest = (url, body, successFunction, enqueueSnackbar, na
                 enqueueSnackbar("You need to login first", {
                     variant: "error",
                 });
-                // window.localStorage.clear();
-                // setLoading(false);
+                window.localStorage.clear();
+                setLoading(false);
                 navigate("/login");
                 // alert("Access token unavailable.");
                 return;
@@ -237,7 +239,7 @@ export const PatchAuthRequest = (url, body, successFunction, enqueueSnackbar, na
         enqueueSnackbar("Some error occured", {
             variant: "error",
         });
-        // setLoading(false);
+        setLoading(false);
         console.log(error)
         return;
     }
