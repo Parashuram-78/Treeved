@@ -28,6 +28,8 @@ export default function LongMenu() {
     setAnchorEl(null);
 
     window.localStorage.clear();
+    window.location.reload();
+    //console.log(localStorage.get(`accessTokenTreeVed`));
     navigate("/login");
   };
   const handleClose2 = () => {

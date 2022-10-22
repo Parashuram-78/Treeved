@@ -33,23 +33,23 @@ const Home = () => {
   const dispatch = useDispatch();
   const user = useSelector(getUser);
 
-  function copy() {
-    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-      let tabUrl = tabs[0].url;
-      // use `url` here inside the callback because it's asynchronous!
-      const el = document.createElement("input");
-      el.value = tabUrl;
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand("copy");
-      document.body.removeChild(el);
-      setUrl(el.value);
-      setCopied(el.value);
-    });
-  }
-  useEffect(() => {
-    copy();
-  }, []);
+  // function copy() {
+  //   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+  //     let tabUrl = tabs[0].url;
+  //     // use `url` here inside the callback because it's asynchronous!
+  //     const el = document.createElement("input");
+  //     el.value = tabUrl;
+  //     document.body.appendChild(el);
+  //     el.select();
+  //     document.execCommand("copy");
+  //     document.body.removeChild(el);
+  //     setUrl(el.value);
+  //     setCopied(el.value);
+  //   });
+  // }
+  // useEffect(() => {
+  //   copy();
+  // }, []);
 
   const check = () => {
     if (url.toString().trim().startsWith("https://") || url.toString().trim().startsWith("http://")) {

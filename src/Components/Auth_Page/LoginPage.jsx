@@ -7,6 +7,9 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader";
+import { authentication } from "../../firebase";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
 function Login() {
   const router = useNavigate();
   const [username, setUserName] = useState("");
@@ -14,7 +17,70 @@ function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
+  const googleLogin = () => {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider).then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.\
 
+     // console.log(result);
+    //  console.log(result.user.getIdToken());
+      result.user
+        .getIdToken()
+        .then((res) => {
+          const ankur = res;
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          };
+          axios
+            .post(
+              "https://api-prod.treeved.com/v1/auth/social/signin/google-oauth2/",
+              {
+                access_token: ankur,
+              },
+              config
+            )
+            .then((res) => {
+              console.log(res);
+              if (res.status == "200") {
+                setLoading(false);
+                console.log(res);
+                localStorage.setItem("accessTokenTreeVed", res.data.access);
+                localStorage.setItem("refreshTokenTreeved", res.data.refresh);
+
+                enqueueSnackbar("Logged in successfully", {
+                  variant: "success",
+                });
+                router("/");
+              }
+            })
+            .catch((e) => {
+              console.log("Error Google login", e);
+              console.log(e);
+              let message = "Account does not exist. Please Sign up.";
+              if (e.response) {
+                if (
+                  e.response.data.message ===
+                  "Account does not exist. Please Sign up."
+                ) {
+                  setErrorMsg("Please Signup first in the platform");
+                  message = "Please Signup first in the platform";
+                }
+                enqueueSnackbar(message, {
+                  variant: "error",
+                });
+                setLoading(false);
+              }
+            });
+        })
+        .catch((error) => {
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          // ...
+        });
+    });
+  };
   const signinHandler = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -26,7 +92,7 @@ function Login() {
     };
     Promise.resolve(
       axios.post(
-        "https://api-dev.treeved.com/v1/auth/login/",
+        "https://api-prod.treeved.com/v1/auth/login/",
         {
           username,
           password,
@@ -51,7 +117,9 @@ function Login() {
         console.log(e);
         let message = "Login failed Invalid username/password !";
         if (e.response) {
-          if (e.response.data.message === "Please Signup first in the platform") {
+          if (
+            e.response.data.message === "Please Signup first in the platform"
+          ) {
             setErrorMsg("Please Signup first in the platform");
             message = "Please Signup first in the platform";
           }
@@ -67,9 +135,19 @@ function Login() {
   return (
     <>
       {loading && <Loader />}
-      <div style={{ width: "307px", height: "391px", position: "relative" }}>
+      <div
+        style={{
+          width: "307px",
+          height: "391px",
+          position: "relative",
+          alignItems: "center",
+        }}
+      >
         <form onSubmit={signinHandler}>
-          <div className="form-inner" style={{ width: "307px", height: "391px", position: "relative" }}>
+          <div
+            className="form-inner"
+            style={{ width: "307px", height: "300px", position: "relative" }}
+          >
             <div
               style={{
                 display: "flex",
@@ -79,7 +157,9 @@ function Login() {
               }}
             >
               <img src={logo} style={{ width: "40px" }} alt="" />
-              <h1 style={{ margin: "0px", fontSize: "20px", color: "#008fe4" }}>TreeVed</h1>
+              <h1 style={{ margin: "0px", fontSize: "20px", color: "#008fe4" }}>
+                TreeVed
+              </h1>
             </div>
             {error_message && <p>{`${error_message}`}</p>}
             <div className="form-group">
@@ -143,20 +223,16 @@ function Login() {
               >
                 Sign In
               </button>
-
-              <h4 className="separator">OR</h4>
-              <button
-                className="google-btn"
-                onClick={() => {
-                  console.log("Google button clicked");
-                }}
-              >
-                <FcGoogle />
-                Sign In with Google
-              </button>
             </div>
           </div>
         </form>
+        <div className="button-group1">
+          <h4 className="separator">OR</h4>
+          <button className="google-btn" onClick={googleLogin}>
+            <FcGoogle />
+            Sign In with Google
+          </button>
+        </div>
       </div>
     </>
   );
