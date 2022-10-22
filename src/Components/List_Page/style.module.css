@@ -50,7 +50,7 @@
 
 .item_main_container {
   width: 259px;
-  min-height: 72px;
+  min-height: 50px;
   background: #ffffff;
   box-shadow: 0px 8px 24px rgba(162, 162, 162, 0.18);
   border-radius: 4px;
@@ -80,7 +80,10 @@
   line-height: 16px;
   color: #858585;
   width: 235px;
-  height: 33px;
+  height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   margin: 0px;
 }
 .bottom_container {

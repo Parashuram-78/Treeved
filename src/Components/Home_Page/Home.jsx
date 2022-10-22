@@ -16,7 +16,8 @@ import { useSnackbar } from "notistack";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser, getUser } from "../../features/User/UserSlice";
 import { useSelector, useDispatch } from "react-redux";
-import {TagsGenerator} from "../Helper/tags"
+import { TagsGenerator } from "../Helper/tags";
+import Loader from "../Loader/Loader";
 
 const Home = () => {
   const [url, setUrl] = useState("");
@@ -24,6 +25,7 @@ const Home = () => {
   const [rating, setRating] = useState(4);
   const [bookmark, setBookmark] = useState(false);
   const [tick, setTick] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [copied, setCopied] = useState("");
   const navigate = useNavigate();
@@ -31,23 +33,23 @@ const Home = () => {
   const dispatch = useDispatch();
   const user = useSelector(getUser);
 
-  // function copy() {
-  //   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-  //     let tabUrl = tabs[0].url;
-  //     // use `url` here inside the callback because it's asynchronous!
-  //     const el = document.createElement("input");
-  //     el.value = tabUrl;
-  //     document.body.appendChild(el);
-  //     el.select();
-  //     document.execCommand("copy");
-  //     document.body.removeChild(el);
-  //     setUrl(el.value);
-  //     setCopied(el.value);
-  //   });
-  // }
-  // useEffect(() => {
-  //   copy();
-  // }, []);
+  function copy() {
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+      let tabUrl = tabs[0].url;
+      // use `url` here inside the callback because it's asynchronous!
+      const el = document.createElement("input");
+      el.value = tabUrl;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+      setUrl(el.value);
+      setCopied(el.value);
+    });
+  }
+  useEffect(() => {
+    copy();
+  }, []);
 
   const check = () => {
     if (url.toString().trim().startsWith("https://") || url.toString().trim().startsWith("http://")) {
@@ -68,12 +70,12 @@ const Home = () => {
       text: desc,
       url: url,
       resource_type: "string",
-      topics: TagsGenerator(""+desc+""),
+      topics: TagsGenerator("" + desc + ""),
       visibility: "only_me",
       rating: rating,
     };
     if (check()) {
-      PostAuthRequest("diary-entry/add/", body, successFxn, enqueueSnackbar, navigate);
+      PostAuthRequest("diary-entry/add/", body, successFxn, enqueueSnackbar, navigate, setLoading);
     } else {
       enqueueSnackbar("Url must start with https:// or http://", { variant: "error" });
     }
@@ -81,7 +83,7 @@ const Home = () => {
 
   const shareHandler = () => {
     const successFxn = (res) => {
-      console.log(res)
+      console.log(res);
       const body = {
         message: "Diary entry shared as post.",
         "status code": 201,
@@ -93,7 +95,14 @@ const Home = () => {
         });
         navigate("/success/dairy");
       };
-      PostAuthRequest(`diary-entry/${res.data.data.id}/share-as-post`, body, success_share_Fxn, enqueueSnackbar, navigate);
+      PostAuthRequest(
+        `diary-entry/${res.data.data.id}/share-as-post`,
+        body,
+        success_share_Fxn,
+        enqueueSnackbar,
+        navigate,
+        setLoading
+      );
     };
     const body = {
       user: {
@@ -108,7 +117,7 @@ const Home = () => {
       rating: rating,
     };
     if (check()) {
-      PostAuthRequest("diary-entry/add/", body, successFxn, enqueueSnackbar, navigate);
+      PostAuthRequest("diary-entry/add/", body, successFxn, enqueueSnackbar, navigate, setLoading);
     } else {
       enqueueSnackbar("Url must start with https:// or http://", { variant: "error" });
     }
@@ -116,6 +125,7 @@ const Home = () => {
 
   return (
     <>
+      {loading && <Loader />}
       <header className={styles.header}>
         <Navbar />
       </header>
@@ -199,9 +209,18 @@ const Home = () => {
           <div className={styles.bottom_right}>
             {user && user.stateType == "dairy" && (
               <div className={styles.bottom_dairy}>
-                <Link to="/ListPage" className={styles.link} state={{ url: url, rating: rating }}>
-                  <button className={styles.add_btn}>Add to List</button>
-                </Link>
+                <button
+                  className={styles.add_btn}
+                  onClick={() => {
+                    check()
+                      ? navigate("/ListPage", {
+                          state: { url: url, rating: rating, tags: TagsGenerator("" + desc + ""), description: desc },
+                        })
+                      : enqueueSnackbar("Url must start with https:// or http://", { variant: "error" });
+                  }}
+                >
+                  Add to List
+                </button>
                 <button className={styles.add_btn} onClick={() => submitHandler()}>
                   Add to Diary
                 </button>
@@ -212,9 +231,19 @@ const Home = () => {
             )}
             {user && user.stateType == "list" && (
               <div className={styles.bottom_dairy} style={{ justifyContent: "center" }}>
-                <Link to="/ListPage" className={styles.link} state={{ url: url, rating: rating }}>
-                  <button className={styles.add_btn}>Add to List</button>
-                </Link>
+                <button
+                  className={styles.add_btn}
+                  onClick={() => {
+                    check()
+                      ? navigate("/ListPage", {
+                          state: { url: url, rating: rating, tags: TagsGenerator("" + desc + ""), description: desc },
+                        })
+                      : enqueueSnackbar("Url must start with https:// or http://", { variant: "error" });
+                  }}
+                >
+                  Add to List
+                </button>
+
                 <button className={styles.share_btn} onClick={() => shareHandler()}>
                   Add to Diary and Share as Post
                 </button>

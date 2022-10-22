@@ -15,10 +15,12 @@ import {
   setCurrentStateProfileImage,
 } from "../../features/User/UserSlice";
 import { useSelector, useDispatch } from "react-redux";
+import Loader from "../Loader/Loader";
 
 const Navbar = () => {
   const [userName, setUserName] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
@@ -36,23 +38,26 @@ const Navbar = () => {
       setUserName(user.userName);
       setProfileImageUrl(user.profileImage);
     } else {
-      GetAuthRequest("users/me/", successFxn, enqueueSnackbar, navigate);
+      GetAuthRequest("users/me/", successFxn, enqueueSnackbar, navigate,setLoading);
     }
     console.log(user);
   }, []);
   return (
-    <div className="Navbar-box">
-      <div className="Avatar">
-        <Avatar src={profileImageUrl} style={{ width: "30px", height: "30px" }}></Avatar>
-        <h3 className="Navbar_user"> {userName}</h3>
+    <>
+    {loading && <Loader/>}
+      <div className="Navbar-box">
+        <div className="Avatar">
+          <Avatar src={profileImageUrl} style={{ width: "30px", height: "30px" }}></Avatar>
+          <h3 className="Navbar_user"> {userName}</h3>
+        </div>
+        <div className="Navbar-menu">
+          <Link to="/UserPages">
+            <button className="Navbar_button">Switch</button>
+          </Link>
+          <LongMenu />
+        </div>
       </div>
-      <div className="Navbar-menu">
-        <Link to="/UserPages">
-          <button className="Navbar_button">Switch</button>
-        </Link>
-        <LongMenu />
-      </div>
-    </div>
+    </>
   );
 };
 export default Navbar;
