@@ -1,3 +1,4 @@
+/*global chrome*/
 import React, { useState } from "react";
 import logo from "../../Images/logo2.png";
 import { FcGoogle } from "react-icons/fc";
@@ -7,8 +8,12 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader";
-import { authentication } from "../../firebase";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { firebaseConfig } from "../../firebase";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import { initializeApp } from 'firebase/app'
+
+export const firebase = initializeApp(firebaseConfig)
+export const auth = getAuth(firebase)
 
 function Login() {
   const router = useNavigate();
@@ -20,66 +25,77 @@ function Login() {
   const googleLogin = () => {
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider).then((result) => {
-      // This gives you a Google Access Token. You can use it to access the Google API.\
 
-     // console.log(result);
-    //  console.log(result.user.getIdToken());
-      result.user
-        .getIdToken()
-        .then((res) => {
-          const ankur = res;
-          const config = {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          };
-          axios
-            .post(
-              "https://api-prod.treeved.com/v1/auth/social/signin/google-oauth2/",
-              {
-                access_token: ankur,
+
+    chrome.identity.getAuthToken({ interactive: true }, token => {
+      if (chrome.runtime.lastError || !token) {
+        alert(`SSO ended with an error: ${JSON.stringify(chrome.runtime.lastError)}`)
+        return
+      }
+      signInWithCredential(auth, GoogleAuthProvider.credential(null, token)).then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.\
+
+        // console.log(result);
+        //  console.log(result.user.getIdToken());
+        result.user
+          .getIdToken()
+          .then((res) => {
+            const ankur = res;
+            const config = {
+              headers: {
+                "Content-Type": "application/json",
               },
-              config
-            )
-            .then((res) => {
-              console.log(res);
-              if (res.status == "200") {
-                setLoading(false);
+            };
+            axios
+              .post(
+                "https://api-prod.treeved.com/v1/auth/social/signin/google-oauth2/",
+                {
+                  access_token: ankur,
+                },
+                config
+              )
+              .then((res) => {
                 console.log(res);
-                localStorage.setItem("accessTokenTreeVed", res.data.access);
-                localStorage.setItem("refreshTokenTreeved", res.data.refresh);
+                if (res.status == "200") {
+                  setLoading(false);
+                  console.log(res);
+                  localStorage.setItem("accessTokenTreeVed", res.data.access);
+                  localStorage.setItem("refreshTokenTreeved", res.data.refresh);
 
-                enqueueSnackbar("Logged in successfully", {
-                  variant: "success",
-                });
-                router("/");
-              }
-            })
-            .catch((e) => {
-              console.log("Error Google login", e);
-              console.log(e);
-              let message = "Account does not exist. Please Sign up.";
-              if (e.response) {
-                if (
-                  e.response.data.message ===
-                  "Account does not exist. Please Sign up."
-                ) {
-                  setErrorMsg("Please Signup first in the platform");
-                  message = "Please Signup first in the platform";
+                  enqueueSnackbar("Logged in successfully", {
+                    variant: "success",
+                  });
+                  router("/");
                 }
-                enqueueSnackbar(message, {
-                  variant: "error",
-                });
-                setLoading(false);
-              }
-            });
-        })
-        .catch((error) => {
-          const credential = GoogleAuthProvider.credentialFromError(error);
-          // ...
-        });
-    });
+              })
+              .catch((e) => {
+                console.log("Error Google login", e);
+                console.log(e);
+                let message = "Account does not exist. Please Sign up.";
+                if (e.response) {
+                  if (
+                    e.response.data.message ===
+                    "Account does not exist. Please Sign up."
+                  ) {
+                    setErrorMsg("Please Signup first in the platform");
+                    message = "Please Signup first in the platform";
+                  }
+                  enqueueSnackbar(message, {
+                    variant: "error",
+                  });
+                  setLoading(false);
+                }
+              });
+          })
+          .catch((error) => {
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            // ...
+          });
+      });
+
+    })
+
+
   };
   const signinHandler = (e) => {
     e.preventDefault();
