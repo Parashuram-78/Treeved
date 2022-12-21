@@ -18,6 +18,12 @@ import { setUser, getUser } from "../../features/User/UserSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { TagsGenerator } from "../Helper/tags";
 import Loader from "../Loader/Loader";
+import Switch from '@mui/material/Switch';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { Typography } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import IconButton from '@mui/material/IconButton';
 
 const Home = () => {
   const [url, setUrl] = useState("");
@@ -32,24 +38,32 @@ const Home = () => {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const user = useSelector(getUser);
+  const pageId = user.pageId;
+  const [checked, setChecked] = React.useState(true);
 
-  // function copy() {
-  //   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-  //     let tabUrl = tabs[0].url;
-  //     // use `url` here inside the callback because it's asynchronous!
-  //     const el = document.createElement("input");
-  //     el.value = tabUrl;
-  //     document.body.appendChild(el);
-  //     el.select();
-  //     document.execCommand("copy");
-  //     document.body.removeChild(el);
-  //     setUrl(el.value);
-  //     setCopied(el.value);
-  //   });
-  // }
-  // useEffect(() => {
-  //   copy();
-  // }, []);
+  const ref = useRef(null);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
+
+  function copy() {
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+      let tabUrl = tabs[0].url;
+      // use `url` here inside the callback because it's asynchronous!
+      const el = document.createElement("input");
+      el.value = tabUrl;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+      setUrl(el.value);
+      setCopied(el.value);
+    });
+  }
+  useEffect(() => {
+    copy();
+  }, []);
 
   const check = () => {
     if (url.toString().trim().startsWith("https://") || url.toString().trim().startsWith("http://")) {
@@ -58,9 +72,13 @@ const Home = () => {
       return false;
     }
   };
+
   const submitHandler = () => {
     const successFxn = (res) => {
-      navigate("/success/dairy");
+      enqueueSnackbar("Link added to diary.", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
     };
     const body = {
       user: {
@@ -81,6 +99,44 @@ const Home = () => {
     }
   };
 
+
+  const onlyShareAsPost = () => {
+    const successFxn = (res) => {
+      enqueueSnackbar("Link shared as post.", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
+      navigate("/success/post");
+    };
+    const body = {
+      user: {
+        username: user.user.username,
+        bio: user.user.bio,
+      },
+      text: desc,
+      url: url,
+      resource_type: "string",
+      topics: TagsGenerator("" + desc + ""),
+      rating: rating,
+    };
+    if (check()) {
+      if (checked) {
+        submitHandler();
+      }
+      console.log("wjkbdjkwd", user)
+      if (user.stateType == "list") {
+        PostAuthRequest(`page/${user.pageId}/posts/create/`, body, successFxn, enqueueSnackbar, navigate, setLoading);
+      } else {
+        PostAuthRequest("post/add/", body, successFxn, enqueueSnackbar, navigate, setLoading);
+      }
+
+    } else {
+      enqueueSnackbar("Url must start with https:// or http://", { variant: "error" });
+    }
+  };
+
+
+
   const shareHandler = () => {
     const successFxn = (res) => {
       console.log(res);
@@ -92,6 +148,7 @@ const Home = () => {
       const success_share_Fxn = (res) => {
         enqueueSnackbar("Diary entry shared as post.", {
           variant: "success",
+          autoHideDuration: 2000,
         });
         navigate("/success/dairy");
       };
@@ -123,6 +180,8 @@ const Home = () => {
     }
   };
 
+
+
   return (
     <>
       {loading && <Loader />}
@@ -131,19 +190,26 @@ const Home = () => {
       </header>
       <div className={styles.mainContainer}>
         <div className={styles.input_div}>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ display: "flex", alignItems: "center", marginLeft: "4px" }}>
             {" "}
             <h1 className={styles.label}>URL*</h1>
           </div>
           <input
             type="text"
-            className={styles.input}
+            className={styles.input1}
             placeholder="Paste your link here"
             defaultValue={copied}
             onChange={(e) => {
               setUrl(e.target.value);
             }}
+            ref={ref}
+
           />
+          {
+            <IconButton aria-label="clear" onClick={() => ref.current.value = ""}>
+              <ClearIcon />
+            </IconButton>
+          }
         </div>
         <div className={styles.input_div}>
           <h1 className={styles.label}>Add more details</h1>
@@ -214,38 +280,59 @@ const Home = () => {
                   onClick={() => {
                     check()
                       ? navigate("/ListPage", {
-                          state: { url: url, rating: rating, tags: TagsGenerator("" + desc + ""), description: desc },
-                        })
-                      : enqueueSnackbar("Url must start with https:// or http://", { variant: "error" });
-                  }}
-                >
-                  Add to List
-                </button>
-                <button className={styles.add_btn} onClick={() => submitHandler()}>
-                  Add to Diary
-                </button>
-                <button className={styles.share_btn} onClick={() => shareHandler()}>
-                  Add to Diary and Share as Post
-                </button>
-              </div>
-            )}
-            {user && user.stateType == "list" && (
-              <div className={styles.bottom_dairy} style={{ justifyContent: "center" }}>
-                <button
-                  className={styles.add_btn}
-                  onClick={() => {
-                    check()
-                      ? navigate("/ListPage", {
-                          state: { url: url, rating: rating, tags: TagsGenerator("" + desc + ""), description: desc },
-                        })
+                        state: { url: url, rating: rating, tags: TagsGenerator("" + desc + ""), description: desc },
+                      })
                       : enqueueSnackbar("Url must start with https:// or http://", { variant: "error" });
                   }}
                 >
                   Add to List
                 </button>
 
-                <button className={styles.share_btn} onClick={() => shareHandler()}>
-                  Add to Diary and Share as Post
+                <FormGroup>
+                  <FormControlLabel control={<Switch
+                    checked={checked}
+                    onChange={handleChange}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                    size="small"
+                  />} label={<Typography variant="body2" color="textSecondary">Add to Diary</Typography>} /
+
+                  >
+
+                </FormGroup>
+                <button className={styles.share_btn} onClick={() => onlyShareAsPost()}>
+                  Share as Post
+                </button>
+              </div>
+            )}
+            {user && user.stateType == "list" && (
+              <div className={styles.bottom_dairy} >
+                <button
+                  className={styles.add_btn}
+                  onClick={() => {
+                    check()
+                      ? navigate("/ListPage", {
+                        state: { url: url, rating: rating, tags: TagsGenerator("" + desc + ""), description: desc },
+                      })
+                      : enqueueSnackbar("Url must start with https:// or http://", { variant: "error" });
+                  }}
+                >
+                  Add to List
+                </button>
+
+                <FormGroup>
+                  <FormControlLabel control={<Switch
+                    checked={checked}
+                    onChange={handleChange}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                    size="small"
+                  />} label={<Typography variant="body2" color="textSecondary">Add to Diary</Typography>} /
+
+                  >
+
+                </FormGroup>
+
+                <button className={styles.share_btn} onClick={() => onlyShareAsPost()}>
+                  Share as Post
                 </button>
               </div>
             )}

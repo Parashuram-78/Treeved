@@ -12,6 +12,7 @@ import {
   setCurrentState,
   setCurrentStateUserName,
   setCurrentStateProfileImage,
+  setPageId,
 } from "../../features/User/UserSlice";
 import Loader from "../Loader/Loader";
 const Userpage = () => {
@@ -27,6 +28,7 @@ const Userpage = () => {
   const [hasMore, setHasMore] = useState(true);
   useEffect(() => {
     const successFxn = (res) => {
+      console.log("res",res)
       dispatch(setUser(res.data));
       dispatch(setCurrentState("dairy"));
       dispatch(setCurrentStateUserName(res.data.username));

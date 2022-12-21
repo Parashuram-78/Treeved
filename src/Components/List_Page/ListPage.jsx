@@ -42,14 +42,14 @@ const ListPage = () => {
         console.log(res);
         setList(list.concat(res.data.results));
 
-        if (res.data.links.next === null ) {
+        if (res.data.links.next === null) {
           setHasMore(false);
         } else {
           setHasMore(true);
         }
       };
 
-      GetAuthRequest(`list/${userName}/user-lists?page=${pageNumber}`, successFxn, enqueueSnackbar, navigate, setLoading);
+      GetAuthRequest(`list/${userName}/user-collection-lists?page=${pageNumber}`, successFxn, enqueueSnackbar, navigate, setLoading);
     }
   };
 
@@ -80,7 +80,7 @@ const ListPage = () => {
 
   const handleObserver = useCallback((entries) => {
     const target = entries[0];
-    if (target.isIntersecting && hasMore ) {
+    if (target.isIntersecting && hasMore) {
       setPageNumber((prev) => prev + 0.5);
     }
   }, []);
@@ -91,7 +91,7 @@ const ListPage = () => {
       rootMargin: "20px",
       threshold: 0,
     };
-    
+
     const observer = new IntersectionObserver(handleObserver, option);
     if (loader.current) observer.observe(loader.current);
   }, [handleObserver]);

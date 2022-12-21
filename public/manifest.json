@@ -16,7 +16,7 @@
     "extension_pages": "script-src 'self'; object-src 'self'; script-src-elem 'self' 'unsafe-inline';"
   },
   "oauth2": {
-    "client_id": "516082304162-121ttkcbv9vr5o7qv0i8fir4v653qmuq.apps.googleusercontent.com",
+    "client_id": "516082304162-09grds94s3493mb8priibp77jnrrbqs7.apps.googleusercontent.com",
     "scopes": ["https://www.googleapis.com/auth/userinfo.email"]
   }
 }
