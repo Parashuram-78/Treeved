@@ -77,8 +77,8 @@ const Home = () => {
     const successFxn = (res) => {
       enqueueSnackbar("Link added to diary.", {
         variant: "success",
-        autoHideDuration: 2000,
       });
+      navigate('/success/dairy')
     };
     const body = {
       user: {
@@ -100,11 +100,11 @@ const Home = () => {
   };
 
 
+
   const onlyShareAsPost = () => {
     const successFxn = (res) => {
       enqueueSnackbar("Link shared as post.", {
         variant: "success",
-        autoHideDuration: 2000,
       });
       navigate("/success/post");
     };
@@ -120,9 +120,6 @@ const Home = () => {
       rating: rating,
     };
     if (check()) {
-      if (checked) {
-        submitHandler();
-      }
       console.log("wjkbdjkwd", user)
       if (user.stateType == "list") {
         PostAuthRequest(`page/${user.pageId}/posts/create/`, body, successFxn, enqueueSnackbar, navigate, setLoading);
@@ -148,7 +145,6 @@ const Home = () => {
       const success_share_Fxn = (res) => {
         enqueueSnackbar("Diary entry shared as post.", {
           variant: "success",
-          autoHideDuration: 2000,
         });
         navigate("/success/dairy");
       };
@@ -288,17 +284,15 @@ const Home = () => {
                   Add to List
                 </button>
 
-                <FormGroup>
-                  <FormControlLabel control={<Switch
-                    checked={checked}
-                    onChange={handleChange}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                    size="small"
-                  />} label={<Typography variant="body2" color="textSecondary">Add to Diary</Typography>} /
+                <button
+                  className={styles.add_btn}
+                  onClick={() => {
+                    submitHandler()
+                  }}
+                >
+                  Add to Diary
+                </button>
 
-                  >
-
-                </FormGroup>
                 <button className={styles.share_btn} onClick={() => onlyShareAsPost()}>
                   Share as Post
                 </button>
@@ -319,17 +313,16 @@ const Home = () => {
                   Add to List
                 </button>
 
-                <FormGroup>
-                  <FormControlLabel control={<Switch
-                    checked={checked}
-                    onChange={handleChange}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                    size="small"
-                  />} label={<Typography variant="body2" color="textSecondary">Add to Diary</Typography>} /
+                <button
+                  className={styles.add_btn}
+                  onClick={() => {
+                    submitHandler()
+                  }}
+                >
+                  Add to Diary
+                </button>
 
-                  >
 
-                </FormGroup>
 
                 <button className={styles.share_btn} onClick={() => onlyShareAsPost()}>
                   Share as Post
