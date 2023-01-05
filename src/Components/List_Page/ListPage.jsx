@@ -59,7 +59,7 @@ const ListPage = () => {
 
   const submitHandler = () => {
     const successFxn = (res) => {
-      const body = { rating: rating };
+      const body = { rating: rating, notes: description };
       const successFunction = (res) => {
         enqueueSnackbar("Sucessfully added to list", {
           variant: "success",
